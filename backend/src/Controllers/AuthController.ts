@@ -2,7 +2,6 @@ import type { Request, Response } from "express"
 import { User, UserRole } from "../Models/User.ts"
 import { GenerateJWT } from "../utils/GenerateJWT.ts"
 import bcrypt from "bcrypt"
-import { where } from "sequelize"
 
 export const registry = async (req: Request, res: Response) => {
     try {
