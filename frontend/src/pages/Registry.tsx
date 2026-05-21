@@ -37,7 +37,7 @@ const Registry = () => {
                 withCredentials: true
             })
 
-            navigate(`/dashboard/${res.data.user.role}`)
+            navigate(`/profile/${res.data.user.role}`)
             console.log("res", res)
         } catch (e) {
             console.log(e)

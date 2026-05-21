@@ -5,24 +5,29 @@ import axios from "axios";
 
 import { useState } from "react";
 
+type LoginProp = {
+    login: string
+    password: string
+}
 
 const Login = () => {
 
-    const [loginForm, setLoginForm] = useState({ email: "", password: "" })
+    const [loginForm, setLoginForm] = useState<LoginProp>({ login: "", password: "" })
 
     const navigate = useNavigate()
 
 
-    const login = async (email: string, password: string) => {
+    const login = async (login: string, password: string) => {
         try {
+
             const res = await axios.post("http://localhost:5000/auth/login", {
-                email: email,
+                login: login,
                 password: password
             }, {
                 withCredentials: true 
             })
-            console.log(`/dashboard/${res.data.user.role}`)
-            navigate(`/dashboard/${res.data.user.role}`)
+
+            navigate(`/profile/${res.data.user.role}`)
             console.log("login", res)
         } catch (e) {
             console.log(e)
@@ -33,12 +38,13 @@ const Login = () => {
         <div>
             <div >
                 <div >
-                    <input type="email"
-                        placeholder="email"
-                        value={loginForm.email}
-                        onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}/>
+                    <label>login</label>
+                    <input
+                        placeholder="login"
+                        value={loginForm.login}
+                        onChange={(e) => setLoginForm({ ...loginForm, login: e.target.value })}/>
                 </div>
-                {/* password */}
+
                 <div >
                     <label >Password</label>
                     <input type="password"
@@ -50,7 +56,7 @@ const Login = () => {
 
             <div >
                 <button
-                    onClick={() => login(loginForm.email, loginForm.password)}>
+                    onClick={() => login(loginForm.login, loginForm.password)}>
                     Sign In
                 </button>
             </div>
