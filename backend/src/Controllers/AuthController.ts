@@ -3,6 +3,8 @@ import { User, UserRole } from "../Models/User.ts"
 import { GenerateJWT } from "../utils/GenerateJWT.ts"
 import bcrypt from "bcrypt"
 
+import type { AuthRequest } from "../Middleware/AuthMidleware.ts"
+
 export const registry = async (req: Request, res: Response) => {
     try {
         const { login, name, lastName, password } = req.body
@@ -42,7 +44,15 @@ export const registry = async (req: Request, res: Response) => {
             maxAge: 2 * 60 * 60 * 1000
         })
 
-        return res.json({ user })
+        return res.json({
+            user: {
+                id: user.dataValues.id,
+                login: user.dataValues.login,
+                name: user.dataValues.name,
+                lastName: user.dataValues.lastName,
+                role: user.dataValues.role
+            }
+        })
     } catch (e) {
         console.log(e)
         return res.status(500).json({
@@ -84,16 +94,70 @@ export const login = async (req: Request, res: Response) => {
 
         const token = GenerateJWT(user.dataValues.id)
 
-        res.cookie("token",token,{
-            httpOnly:true,
-            secure: false,
-            sameSite:"lax",
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // можно с http
+            sameSite: "lax",
             maxAge: 2 * 60 * 60 * 1000
         })
 
         return res.json({
-            user
+            user: {
+                id: user.dataValues.id,
+                login: user.dataValues.login,
+                name: user.dataValues.name,
+                lastName: user.dataValues.lastName,
+                role: user.dataValues.role
+            }
         })
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({
+            message: "server error"
+        })
+    }
+}
+
+export const getMe = async (req: AuthRequest, res: Response) => {
+    try {
+
+        const user = await User.findByPk(req.id)
+        if (!user) {
+            return res.status(400).json({
+                message: "user not found"
+            })
+        }
+        return res.json({
+            user: {
+                id: user.dataValues.id,
+                login: user.dataValues.login,
+                name: user.dataValues.name,
+                lastName: user.dataValues.lastName,
+                role: user.dataValues.role
+            }
+        })
+
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({
+            message: "server error"
+        })
+    }
+}
+
+export const logout = async (req: Request, res: Response) => {
+    try {
+
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax"
+        })
+
+        return res.json({
+            message: "logout successful"
+        })
+
     } catch (e) {
         console.log(e)
         return res.status(500).json({

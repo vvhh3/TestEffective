@@ -3,7 +3,9 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import {registry, login} from "./Controllers/AuthController.ts"
+
+import {registry, login,getMe,logout} from "./Controllers/AuthController.ts"
+import { authCheck } from "./Middleware/AuthMidleware.ts"
 
 dotenv.config()
 
@@ -20,6 +22,8 @@ app.use(cookieParser())
 
 app.post("/auth/register", registry)
 app.post("/auth/login", login)
+app.post("/auth/logout", authCheck, logout) 
+app.get("/auth/me", authCheck, getMe)
 
 async function start () {
     try{

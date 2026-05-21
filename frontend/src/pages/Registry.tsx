@@ -18,6 +18,7 @@ const Registry = () => {
         lastName: "",
         password: ""
     })
+    const [error, setError] = useState<string>("")
 
     const navigate = useNavigate()
     const registry = async (
@@ -37,10 +38,13 @@ const Registry = () => {
                 withCredentials: true
             })
 
-            navigate(`/profile/${res.data.user.role}`)
+            localStorage.setItem("isAuth", "true")
+
+            navigate(`/profile`)
             console.log("res", res)
         } catch (e) {
             console.log(e)
+            setError("ошибка регистрации")
         }
     }
 
@@ -68,7 +72,7 @@ const Registry = () => {
             </div>
 
             <div>
-                <label >Last name</label>
+                <label> Last name </label>
                 <div>
 
                     <input
@@ -101,6 +105,10 @@ const Registry = () => {
                     )}>
                     Create Account
                 </button>
+            </div>
+
+            <div>
+                <p>{error}</p>
             </div>
         </div>
     )

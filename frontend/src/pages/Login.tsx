@@ -13,9 +13,9 @@ type LoginProp = {
 const Login = () => {
 
     const [loginForm, setLoginForm] = useState<LoginProp>({ login: "", password: "" })
+    const [error, setError] = useState<string>("")
 
     const navigate = useNavigate()
-
 
     const login = async (login: string, password: string) => {
         try {
@@ -27,10 +27,13 @@ const Login = () => {
                 withCredentials: true 
             })
 
-            navigate(`/profile/${res.data.user.role}`)
+            localStorage.setItem("isAuth", "true")
+
+            navigate(`/profile`)
             console.log("login", res)
         } catch (e) {
             console.log(e)
+            setError("Wrong login or password")
         }
     }
 
@@ -61,7 +64,9 @@ const Login = () => {
                 </button>
             </div>
 
-
+            <div>
+                <p>{error}</p>
+            </div>
         </div>
     )
 }
