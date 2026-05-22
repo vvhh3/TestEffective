@@ -114,6 +114,7 @@ button:active {
 }
 
 .home-links {
+  
   display: flex;
   gap: 16px;
   justify-content: center;

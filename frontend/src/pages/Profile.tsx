@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
@@ -33,14 +33,10 @@ export default function Profile() {
 
   useEffect(() => {
     const init = async () => {
-
-      if (localStorage.getItem("isAuth") === "true") {
-        const res = await axios.get("http://localhost:5000/auth/me", {
-          withCredentials: true
-        })
-        setUser(res.data.user)
-      }
-
+      const res = await axios.get("http://localhost:5000/auth/me", {
+        withCredentials: true
+      })
+      setUser(res.data.user)
     }
     init()
   }, [])
@@ -71,9 +67,14 @@ export default function Profile() {
               <span>{user.login}</span>
             </div>
           </div>
+
           <button onClick={logout}>
             Logout
           </button>
+
+          <div className="home-links" style={{marginTop:"20px"}}>
+            <Link to="/profile/update">обновить свои данные</Link>
+          </div>
         </>
       )}
     </div>

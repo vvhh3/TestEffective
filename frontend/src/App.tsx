@@ -4,27 +4,11 @@ import Home from './pages/Home'
 import Registry from './pages/Registry'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
-
-// import axios from 'axios'
+import ProfileUpdate from './pages/ProfilePage'
 
 import './App.css'
-// import { useEffect } from 'react'
 
 function App() {
-
-  // useEffect(() => {
-  //   const init = async () => {
-
-  //     if (localStorage.getItem("isAuth") === "true") {
-  //       const res = await axios.get("http://localhost:5000/auth/me", {
-  //         withCredentials: true
-  //       })
-  //       console.log("res", res)
-  //     }
-
-  //   }
-  //   init()
-  // }, [])
 
   return (
     <>
@@ -34,6 +18,7 @@ function App() {
           <Route path='/register' element={<Registry />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/update' element={<ProfileUpdate />} />
         </Routes>
       </BrowserRouter>
     </>

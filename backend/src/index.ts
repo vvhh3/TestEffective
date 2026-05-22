@@ -4,6 +4,7 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 
+import { UpdateDataUser } from "./Controllers/ProfileController.ts"
 import {registry, login,getMe,logout} from "./Controllers/AuthController.ts"
 import { authCheck } from "./Middleware/AuthMidleware.ts"
 
@@ -23,6 +24,9 @@ app.use(cookieParser())
 app.post("/auth/register", registry)
 app.post("/auth/login", login)
 app.post("/auth/logout", authCheck, logout) 
+
+app.patch("/profile/update", authCheck, UpdateDataUser)
+
 app.get("/auth/me", authCheck, getMe)
 
 async function start () {
