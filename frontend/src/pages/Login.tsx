@@ -1,38 +1,33 @@
-
-import { useNavigate,Link } from "react-router-dom";
-
-import axios from "axios";
-
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
+import { useState } from "react"
 
 type LoginProp = {
-    login: string
+    email: string
     password: string
 }
 
 const Login = () => {
-
-    const [loginForm, setLoginForm] = useState<LoginProp>({ login: "", password: "" })
+    const [loginForm, setLoginForm] = useState<LoginProp>({ email: "", password: "" })
     const [error, setError] = useState<string>("")
 
     const navigate = useNavigate()
 
-    const login = async (login: string, password: string) => {
+    const login = async (email: string, password: string) => {
         try {
-
             await axios.post("http://localhost:5000/auth/login", {
-                login: login,
-                password: password
+                email,
+                password
             }, {
                 withCredentials: true
             })
 
             localStorage.setItem("isAuth", "true")
 
-            navigate(`/profile`)
+            navigate("/profile")
         } catch (e) {
             console.log(e)
-            setError("Wrong login or password")
+            setError("Wrong email or password")
         }
     }
 
@@ -42,11 +37,11 @@ const Login = () => {
             <p className="form-subtitle">Sign in to your account</p>
 
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <label>login</label>
+                <label>Email</label>
                 <input
-                    placeholder="login"
-                    value={loginForm.login}
-                    onChange={(e) => setLoginForm({ ...loginForm, login: e.target.value })} />
+                    placeholder="email"
+                    value={loginForm.email}
+                    onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })} />
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -58,12 +53,12 @@ const Login = () => {
             </div>
 
             <button
-                onClick={() => login(loginForm.login, loginForm.password)}>
+                onClick={() => login(loginForm.email, loginForm.password)}>
                 Sign In
             </button>
 
             <div className="home-links">
-                <Link to="/Home">Home</Link>
+                <Link to="/">Home</Link>
                 <Link to="/register">Register</Link>
             </div>
             {error && <p className="error">{error}</p>}
@@ -71,4 +66,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Login

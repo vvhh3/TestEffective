@@ -1,18 +1,16 @@
-
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
 
 interface User {
-  id: string;
-  login: string;
-  name: string;
-  lastName: string;
-  role: string;
+  id: string
+  email: string
+  name: string
+  lastName: string
+  role: string
 }
 
 export default function Profile() {
-
   const [user, setUser] = useState<User | null>()
   const navigate = useNavigate()
 
@@ -28,6 +26,19 @@ export default function Profile() {
       console.log(e)
       localStorage.removeItem("isAuth")
       navigate("/")
+    }
+  }
+
+  const deleteAccount = async () => {
+    try {
+      await axios.delete("http://localhost:5000/profile", {
+        withCredentials: true
+      })
+
+      localStorage.removeItem("isAuth")
+      navigate("/")
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -55,7 +66,7 @@ export default function Profile() {
               <span>{user.role}</span>
             </div>
             <div className="profile-info-item">
-              <span>Name</span>
+              <span>First name</span>
               <span>{user.name}</span>
             </div>
             <div className="profile-info-item">
@@ -63,8 +74,8 @@ export default function Profile() {
               <span>{user.lastName}</span>
             </div>
             <div className="profile-info-item">
-              <span>Login</span>
-              <span>{user.login}</span>
+              <span>Email</span>
+              <span>{user.email}</span>
             </div>
           </div>
 
@@ -72,8 +83,12 @@ export default function Profile() {
             Logout
           </button>
 
-          <div className="home-links" style={{marginTop:"20px"}}>
-            <Link to="/profile/update">обновить свои данные</Link>
+          <button onClick={deleteAccount}>
+            Delete account
+          </button>
+
+          <div className="home-links" style={{ marginTop: "20px" }}>
+            <Link to="/profile/update">Update profile</Link>
           </div>
         </>
       )}

@@ -3,10 +3,10 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-
-import { UpdateDataUser } from "./Controllers/ProfileController.ts"
-import {registry, login,getMe,logout} from "./Controllers/AuthController.ts"
+import { registry, login, getMe, logout } from "./Controllers/AuthController.ts"
+import { UpdateDataUser, deleteProfile } from "./Controllers/ProfileController.ts"
 import { authCheck } from "./Middleware/AuthMidleware.ts"
+import { seedTestData } from "./seed.ts"
 
 dotenv.config()
 
@@ -23,17 +23,18 @@ app.use(cookieParser())
 
 app.post("/auth/register", registry)
 app.post("/auth/login", login)
-app.post("/auth/logout", authCheck, logout) 
+app.post("/auth/logout", authCheck, logout)
+app.get("/auth/me", authCheck, getMe)
 
 app.patch("/profile/update", authCheck, UpdateDataUser)
-
-app.get("/auth/me", authCheck, getMe)
+app.delete("/profile", authCheck, deleteProfile)
 
 async function start () {
     try{
         await sequelize.authenticate()
 
-        await sequelize.sync()
+        await sequelize.sync({ alter: true })
+        await seedTestData()
 
         app.listen(5000,() => {
             console.log("server started on 5000 port")

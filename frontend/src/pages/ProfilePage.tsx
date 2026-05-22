@@ -1,24 +1,23 @@
-
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
 
 type UpdateData = {
-    name: string | undefined;
-    lastName: string | undefined;
+    name: string
+    lastName: string
 }
 
 export default function ProfileUpdate() {
-
-    const [error, setError] = useState('')
-
-    const [updateForm, setUpdateForm] = useState<UpdateData>({ name: "", lastName: "" })
+    const [error, setError] = useState("")
+    const [updateForm, setUpdateForm] = useState<UpdateData>({
+        name: "",
+        lastName: ""
+    })
 
     const navigate = useNavigate()
 
     const update = async () => {
         try {
-
             await axios.patch("http://localhost:5000/profile/update", {
                 name: updateForm.name,
                 lastName: updateForm.lastName
@@ -29,13 +28,12 @@ export default function ProfileUpdate() {
             navigate("/profile")
         } catch (e) {
             console.log(e)
-            setError("Wrong name or lastName")
+            setError("Wrong profile data")
         }
     }
 
     useEffect(() => {
         const init = async () => {
-
             const res = await axios.get("http://localhost:5000/auth/me", {
                 withCredentials: true
             })
@@ -53,7 +51,7 @@ export default function ProfileUpdate() {
             <h2 className="form-title">Update Data</h2>
 
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <label>name</label>
+                <label>First name</label>
                 <input
                     placeholder="name"
                     value={updateForm.name}
@@ -61,7 +59,7 @@ export default function ProfileUpdate() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <label>lastName</label>
+                <label>Last name</label>
                 <input
                     placeholder="lastName"
                     value={updateForm.lastName}

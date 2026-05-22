@@ -13,13 +13,13 @@ export const User = sequelize.define("user",{
         autoIncrement:true,
         primaryKey: true
     },
-    login:{
+    email:{
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     role: {
-        type: DataTypes.ENUM(UserRole.user,UserRole.manager,UserRole.admin),
+        type: DataTypes.ENUM(UserRole.user, UserRole.manager, UserRole.admin),
         allowNull: false
     },
     name:{
@@ -33,5 +33,10 @@ export const User = sequelize.define("user",{
     password:{
         type: DataTypes.STRING,
         allowNull: false
+    },
+    isActive:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
 })

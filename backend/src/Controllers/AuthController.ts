@@ -7,16 +7,16 @@ import type { AuthRequest } from "../Middleware/AuthMidleware.ts"
 
 export const registry = async (req: Request, res: Response) => {
     try {
-        const { login, name, lastName, password } = req.body
+        const { email, name, lastName, password } = req.body
 
-        if (!name || !lastName || !login || !password) {
+        if (!name || !lastName || !email || !password) {
             return res.status(400).json({
                 message: "data is faild"
             })
         }
 
         const candidate = await User.findOne({
-            where: { login }
+            where: { email }
         })
 
         if (candidate !== null) {
@@ -28,10 +28,10 @@ export const registry = async (req: Request, res: Response) => {
         const hashPass = await bcrypt.hash(password, 10)
 
         const user = await User.create({
-            login: login,
+            email,
             role: UserRole.user,
-            name: name,
-            lastName: lastName,
+            name,
+            lastName,
             password: hashPass
         })
 
@@ -47,7 +47,7 @@ export const registry = async (req: Request, res: Response) => {
         return res.json({
             user: {
                 id: user.dataValues.id,
-                login: user.dataValues.login,
+                email: user.dataValues.email,
                 name: user.dataValues.name,
                 lastName: user.dataValues.lastName,
                 role: user.dataValues.role
@@ -63,17 +63,16 @@ export const registry = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     try {
+        const { email, password } = req.body
 
-        const { login, password } = req.body
-
-        if (!login || !password) {
+        if (!email || !password) {
             return res.status(400).json({
                 message: "data is faild"
             })
         }
 
         const user = await User.findOne({
-            where: { login }
+            where: { email }
         })
 
         if (!user) {
@@ -81,6 +80,13 @@ export const login = async (req: Request, res: Response) => {
                 message: "server error"
             })
         }
+
+        if (!user.dataValues.isActive) {
+            return res.status(403).json({
+                message: "user is deleted"
+            })
+        }
+
         const pas = await bcrypt.compare(
             password,
             user.dataValues.password
@@ -96,7 +102,7 @@ export const login = async (req: Request, res: Response) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // можно с http
+            secure: false,
             sameSite: "lax",
             maxAge: 2 * 60 * 60 * 1000
         })
@@ -104,7 +110,7 @@ export const login = async (req: Request, res: Response) => {
         return res.json({
             user: {
                 id: user.dataValues.id,
-                login: user.dataValues.login,
+                email: user.dataValues.email,
                 name: user.dataValues.name,
                 lastName: user.dataValues.lastName,
                 role: user.dataValues.role
@@ -120,17 +126,24 @@ export const login = async (req: Request, res: Response) => {
 
 export const getMe = async (req: AuthRequest, res: Response) => {
     try {
-
         const user = await User.findByPk(req.id)
+
         if (!user) {
             return res.status(400).json({
                 message: "user not found"
             })
         }
+
+        if (!user.dataValues.isActive) {
+            return res.status(403).json({
+                message: "user is deleted"
+            })
+        }
+
         return res.json({
             user: {
                 id: user.dataValues.id,
-                login: user.dataValues.login,
+                email: user.dataValues.email,
                 name: user.dataValues.name,
                 lastName: user.dataValues.lastName,
                 role: user.dataValues.role
@@ -147,7 +160,6 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
     try {
-
         res.clearCookie("token", {
             httpOnly: true,
             secure: false,
