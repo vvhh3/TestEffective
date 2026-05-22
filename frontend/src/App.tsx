@@ -5,33 +5,33 @@ import Registry from './pages/Registry'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 
-import axios from 'axios'
+// import axios from 'axios'
 
 import './App.css'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 
 function App() {
 
-  useEffect(() => {
-    const init = async () => {
+  // useEffect(() => {
+  //   const init = async () => {
 
-      if (localStorage.getItem("isAuth") === "true") {
-        const res = await axios.get("http://localhost:5000/auth/me", {
-          withCredentials: true
-        })
-        console.log("res", res)
-      }
+  //     if (localStorage.getItem("isAuth") === "true") {
+  //       const res = await axios.get("http://localhost:5000/auth/me", {
+  //         withCredentials: true
+  //       })
+  //       console.log("res", res)
+  //     }
 
-    }
-    init()
-  }, [])
+  //   }
+  //   init()
+  // }, [])
 
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/registry' element={<Registry />} />
+          <Route path='/register' element={<Registry />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile' element={<Profile />} />
         </Routes>

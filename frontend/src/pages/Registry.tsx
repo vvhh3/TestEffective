@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import axios from "axios"
 import { useState } from "react"
@@ -28,7 +28,7 @@ const Registry = () => {
         password: string
     ) => {
         try {
-            const res = await axios.post("http://localhost:5000/auth/register",
+            await axios.post("http://localhost:5000/auth/register",
                 {
                     login: login,
                     name: name,
@@ -41,7 +41,6 @@ const Registry = () => {
             localStorage.setItem("isAuth", "true")
 
             navigate(`/profile`)
-            console.log("res", res)
         } catch (e) {
             console.log(e)
             setError("ошибка регистрации")
@@ -49,67 +48,59 @@ const Registry = () => {
     }
 
     return (
-        <div>
+        <div className="form-container">
+            <h2 className="form-title">Create account</h2>
+            <p className="form-subtitle">Fill in the details below</p>
 
-            <div>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <label>login</label>
-                <div >
-                    <input
-                        value={refistryForm.login}
-                        onChange={(e) => setRegistryForm({ ...refistryForm, login: e.target.value })}
-                        placeholder="login" />
-                </div>
+                <input
+                    value={refistryForm.login}
+                    onChange={(e) => setRegistryForm({ ...refistryForm, login: e.target.value })}
+                    placeholder="login" />
             </div>
 
-            <div >
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <label>First name</label>
-                <div>
-                    <input
-                        value={refistryForm.name}
-                        onChange={(e) => setRegistryForm({ ...refistryForm, name: e.target.value })}
-                        placeholder="Matvei" />
-                </div>
+                <input
+                    value={refistryForm.name}
+                    onChange={(e) => setRegistryForm({ ...refistryForm, name: e.target.value })}
+                    placeholder="Matvei" />
             </div>
 
-            <div>
-                <label> Last name </label>
-                <div>
-
-                    <input
-                        value={refistryForm.lastName}
-                        onChange={(e) => setRegistryForm({ ...refistryForm, lastName: e.target.value })}
-                        placeholder="Doe" />
-                </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <label>Last name</label>
+                <input
+                    value={refistryForm.lastName}
+                    onChange={(e) => setRegistryForm({ ...refistryForm, lastName: e.target.value })}
+                    placeholder="Doe" />
             </div>
 
-
-            <div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <label>Password</label>
-                <div>
-                    <input
-                        value={refistryForm.password}
-                        onChange={(e) => setRegistryForm({ ...refistryForm, password: e.target.value })}
-                        placeholder="Create a strong password"
-                        type="password" />
-                </div>
+                <input
+                    value={refistryForm.password}
+                    onChange={(e) => setRegistryForm({ ...refistryForm, password: e.target.value })}
+                    placeholder="Create a strong password"
+                    type="password" />
             </div>
 
+            <button
+                onClick={() => registry(
+                    refistryForm.login,
+                    refistryForm.name,
+                    refistryForm.lastName,
+                    refistryForm.password
+                )}>
+                Create Account
+            </button>
 
-            <div>
-                <button
-                    onClick={() => registry(
-                        refistryForm.login,
-                        refistryForm.name,
-                        refistryForm.lastName,
-                        refistryForm.password
-                    )}>
-                    Create Account
-                </button>
+            <div className="home-links">
+                <Link to="/login">Login</Link>
+                <Link to="/">Home</Link>
             </div>
-
-            <div>
-                <p>{error}</p>
-            </div>
+            {error && <p className="error">{error}</p>}
         </div>
     )
 }

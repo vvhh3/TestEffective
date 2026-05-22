@@ -1,0 +1,190 @@
+
+body {
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.form-container {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  padding: 48px 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-title {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  transition: all 0.25s;
+}
+
+input::placeholder {
+  color: #555;
+}
+
+input:focus {
+  border-color: #888;
+  background: #262626;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  background: #fff;
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 4px;
+}
+
+button:hover {
+  background: #ccc;
+}
+
+button:active {
+  background: #aaa;
+}
+
+.error {
+  color: #ff4444;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Home page */
+.home-container {
+  text-align: center;
+}
+
+.home-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+.home-subtitle {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.home-links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.home-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 36px;
+  border: 1px solid #333;
+  border-radius: 12px;
+  transition: all 0.25s;
+  background: #1a1a1a;
+}
+
+.home-links a:hover {
+  background: white;
+  color: #111;
+  border-color: white;
+}
+
+/* Profile */
+.profile-card {
+  background: #1a1a1a;
+  border: 1px solid #252222;
+  padding: 48px 40px;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.profile-role {
+  color: #666;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.profile-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #222;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+}
+
+.profile-info-item span:first-child {
+  color: #666;
+  font-size: 13px;
+}
+
+.profile-info-item span:last-child {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-loading {
+  color: #666;
+  font-size: 14px;
+}
