@@ -5,7 +5,10 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import { registry, login, getMe, logout } from "./Controllers/AuthController.ts"
 import { UpdateDataUser, deleteProfile } from "./Controllers/ProfileController.ts"
+import { getOrders, getProducts, getUsers } from "./Controllers/DataController.ts"
 import { authCheck } from "./Middleware/AuthMidleware.ts"
+import { RoleMiddleware } from "./Middleware/RoleMiddleware.ts"
+import { UserRole } from "./Models/User.ts"
 import { seedTestData } from "./seed.ts"
 
 dotenv.config()
@@ -28,6 +31,10 @@ app.get("/auth/me", authCheck, getMe)
 
 app.patch("/profile/update", authCheck, UpdateDataUser)
 app.delete("/profile", authCheck, deleteProfile)
+
+app.get("/products", authCheck, RoleMiddleware([UserRole.user, UserRole.manager, UserRole.admin]), getProducts)
+app.get("/orders", authCheck, RoleMiddleware([UserRole.user, UserRole.manager, UserRole.admin]), getOrders)
+app.get("/users", authCheck, RoleMiddleware([UserRole.admin]), getUsers)
 
 async function start () {
     try{

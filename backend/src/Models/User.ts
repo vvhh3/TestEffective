@@ -1,4 +1,4 @@
-import { sequelize } from "../db"
+import { sequelize } from "../db.ts"
 import { DataTypes } from "sequelize"
 
 export enum UserRole {

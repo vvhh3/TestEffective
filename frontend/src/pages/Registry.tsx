@@ -32,8 +32,6 @@ const Registry = () => {
                 withCredentials: true
             })
 
-            localStorage.setItem("isAuth", "true")
-
             navigate("/profile")
         } catch (e) {
             console.log(e)
